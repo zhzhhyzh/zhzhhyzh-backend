@@ -124,3 +124,5 @@ cron.schedule('0 0 * * *', () => {
     console.error('Error during cleanup:', err);
   }
 });
+
+module.exports = app; 
