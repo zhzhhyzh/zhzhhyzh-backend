@@ -80,6 +80,15 @@ app.get('/fetchRecord', (req, res) => {
   });
 });
 
+app.get('/download', (req, res) => {
+  res.download(csvFile, 'index.csv', (err) => {
+    if (err) {
+      console.error('Error downloading file:', err);
+      res.status(500).json({ error: 'Failed to download file' });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
