@@ -89,16 +89,8 @@ app.get('/download', (req, res) => {
   });
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: 'API not found' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
 // Cron job to delete records older than 30 days daily at midnight
-cron.schedule('0 0 * * *', () => {
+app.get('/api/cleanup', async (req, res) => {
   console.log('Running cleanup job...');
   try {
     const data = fs.readFileSync(csvFile, 'utf8');
@@ -124,5 +116,14 @@ cron.schedule('0 0 * * *', () => {
     console.error('Error during cleanup:', err);
   }
 });
+
+app.use((req, res) => {
+  res.status(404).json({ error: 'API not found' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
 
 module.exports = app; 
