@@ -64,6 +64,22 @@ app.post('/capture', (req, res) => {
   });
 });
 
+app.get('/fetchRecord', (req, res) => {
+  fs.readFile(csvFile, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading CSV:', err);
+      return res.status(500).json({ error: 'Failed to read data' });
+    }
+
+    const lines = data.trim().split('\n');
+    const records = lines.slice(1).map(line => {
+      const [ip, region, dateTime, longLat] = line.split(',');
+      return { ip, region, dateTime, longLat };
+    });
+    res.json(records);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
